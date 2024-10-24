@@ -1,53 +1,62 @@
 # Author: Kunal Singh
 # This script scrapes product reviews for different Samsung Galaxy versions from eBay and saves them into text files.
 
-import requests                 # To send HTTP requests to fetch the web pages
-from bs4 import BeautifulSoup   # To parse the HTML content of the web pages
+import requests
+from bs4 import BeautifulSoup
 
-product_urls = {
-    'Samsung_Galaxy_S20': 'https://www.ebay.com/urw/Samsung-Galaxy-S20-Ultra-5G-128-GB-Black-Unlocked-/product-reviews/10041848098?pgn=1',
-    'Samsung_Galaxy_S21': 'https://www.ebay.com/urw/Samsung-Galaxy-S21-Ultra-5G-512-GB-Black-Unlocked-/product-reviews/13043687483?pgn=1',
-    'Samsung_Galaxy_S22': 'https://www.ebay.com/urw/Samsung-Galaxy-S22-Ultra-512-GB-Black-Unlocked-/product-reviews/13052280684?pgn=1',
-    'Samsung_Galaxy_S23': 'https://www.ebay.com/urw/Samsung-Galaxy-S23-Ultra-256-GB-Black-Unlocked-/product-reviews/23059054247?pgn=1'
-}
+# Function to read URLs from the text file
+def read_urls_from_file(file_name):
+    product_urls = {}
+    with open(file_name, 'r') as file:
+        current_product = None
+        for line in file:
+            line = line.strip()
+            if line.startswith('#'):  # Lines starting with '#' are product version names
+                current_product = line[1:].strip()
+                product_urls[current_product] = []
+            elif line and current_product:  # URLs are stored under the respective product
+                product_urls[current_product].append(line)
+    return product_urls
 
 # Function to scrape reviews from a single page
 def scrape_reviews(url):
     response = requests.get(url)                        # Sending a request to the URL to retrieve the page content
     if response.status_code != 200:  
         print(f"Failed to retrieve {url}. Status code: {response.status_code}")
-        return [] 
-    
+        return []
+
     soup = BeautifulSoup(response.text, 'html.parser')  # Parsing the HTML content using BeautifulSoup
 
-    # Finding all sections of the page that contain reviews (based on specific HTML structure)
-    review_sections = soup.find_all('div', class_='ebay-review-section')  
+    # Find all sections containing reviews
+    review_sections = soup.find_all('div', class_='ebay-review-section')
 
-    if not review_sections:  
+    if not review_sections:
         print(f"No reviews found on the page: {url}")
         return []
 
-    # Extracting and returning the text content of the reviews
+    # Extract and return the text content of the reviews
     return [section.find('p').text.strip() for section in review_sections if section.find('p')]
 
-# Function to save reviews to a file, where each product version gets its own file
+# Function to save reviews to a file
 def save_reviews(version, reviews):
-    filename = f'{version}_reviews.txt'  
-    with open(filename, 'w') as file:  
-        for i, review in enumerate(reviews, 1):  
-            file.write(f"Review {i}:\n{review}\n\n")  # Writing each review to the file
-    print(f"Saved {len(reviews)} reviews to {filename}")  
+    filename = f'{version}_reviews.txt'
+    with open(filename, 'a') as file:  # 'a' mode to append to the file if it already exists
+        for i, review in enumerate(reviews, 1):
+            file.write(f"Review {i}:\n{review}\n\n")
+    print(f"Saved {len(reviews)} reviews to {filename}")
 
-# Main execution to scrape and save reviews for each product version
+# Main execution: read URLs from the file and scrape reviews
 if __name__ == "__main__":
-    
-    for version, url in product_urls.items():
-        print(f"Scraping reviews for {version} from {url}")
+    product_urls = read_urls_from_file('input.txt')  # Read URLs from the text file
+
+    for version, urls in product_urls.items():
+        all_reviews = []
+        print(f"Scraping reviews for {version}")
         
-        # Scrape reviews from the current URL
-        reviews = scrape_reviews(url)
+        for url in urls:
+            print(f"Scraping URL: {url}")
+            reviews = scrape_reviews(url)
+            all_reviews.extend(reviews)  # Collect reviews from all pages for the product
         
-        # Save the scraped reviews into separate files based on the product version
-        save_reviews(version, reviews)
-        
-        print(f"Total reviews scraped for {version}: {len(reviews)}\n")  # Log the total number of reviews scraped
+        save_reviews(version, all_reviews)  # Save all collected reviews for this product version
+        print(f"Total reviews scraped for {version}: {len(all_reviews)}\n")
