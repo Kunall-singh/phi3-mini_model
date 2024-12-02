@@ -2,12 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_sentiments_combined(sentiment_results):
-    # Define colors for the sentiments
+    # colors for the sentiments
     colors = {'negative': 'red', 'positive': 'blue', 'neutral': 'yellow'}
     devices = list(sentiment_results.keys())
     sentiments = ['negative', 'positive', 'neutral']
     
-    # Prepare data for plotting
     counts = {sentiment: [0] * len(devices) for sentiment in sentiments}
     for i, device in enumerate(devices):
         sentiment_counts = {'negative': 0, 'positive': 0, 'neutral': 0}
@@ -31,7 +30,7 @@ def plot_sentiments_combined(sentiment_results):
             color=colors[sentiment]
         )
     
-    # Add labels, title, and legend
+    #label and title
     plt.xlabel('Devices')
     plt.ylabel('Sentiment Counts')
     plt.title('Sentiment Analysis for All Devices')

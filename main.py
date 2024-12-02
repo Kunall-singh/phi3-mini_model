@@ -1,3 +1,4 @@
+# Name - Kunal Singh
 from sentiment_pipeline import SentimentPipeline
 from plot_sentiments import plot_sentiments_combined
 import os
@@ -19,8 +20,7 @@ if __name__ == "__main__":
     # Read URLs from input file
     product_urls = read_urls_from_file('input.txt')
 
-    # Ensure output directory exists
-    output_dir = "output"
+    output_dir = "output"           # Output directory
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -31,4 +31,4 @@ if __name__ == "__main__":
     # Plot combined results
     plot_sentiments_combined(sentiment_results)
 
-    print("Pipeline execution completed. Check 'output/' for results.")
+    print("Pipeline execution completed. Please Check 'output' folder for results.")
