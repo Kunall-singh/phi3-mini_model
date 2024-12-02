@@ -149,25 +149,25 @@ pytest
 **3. View Results:**The output will indicate whether each test passed or failed, along with any relevant error messages.
 
 ## Description of Tests
-## test_analyzer.py-
+### test_analyzer.py-
 
-Module: SentimentAnalyzer
-Purpose: Validates sentiment classification for predefined comments.
-Checks:Correct number of sentiments returned, Sentiments are classified as positive, neutral, or negative.
+- Module: SentimentAnalyzer
+- Purpose: Validates sentiment classification for predefined comments.
+- Checks:Correct number of sentiments returned, Sentiments are classified as positive, neutral, or negative.
 
-## test_pipeline.py
-Module: SentimentPipeline
-Purpose: Tests integration of scraping and sentiment analysis.
-Checks: Correct sentiment classification for mock reviews, Sentiment output files are correctly generated.
+### test_pipeline.py
+- Module: SentimentPipeline
+- Purpose: Tests integration of scraping and sentiment analysis.
+- Checks: Correct sentiment classification for mock reviews, Sentiment output files are correctly generated.
 
-## test_plot.py
-Module: plot_sentiments_combined
-Purpose: Ensures the sentiment bar chart is generated correctly.
-Checks: Bar chart file is saved in the output/ directory.
+### test_plot.py
+- Module: plot_sentiments_combined
+- Purpose: Ensures the sentiment bar chart is generated correctly.
+- Checks: Bar chart file is saved in the output/ directory.
 
-## test_scraper.py
-Module: ReviewScraper
-Purpose: Validates the review scraping functionality.
-Checks: Fetched reviews match expected mock data.
+### test_scraper.py
+- Module: ReviewScraper
+- Purpose: Validates the review scraping functionality.
+- Checks: Fetched reviews match expected mock data.
 
 **If any test fails, pytest will display a detailed error log to help debug the issue.**
