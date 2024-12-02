@@ -68,7 +68,7 @@ pip install -r requirements.txt
 ```
 
 ### Usage
-**1. Configure Input**
+**1. Configure Input**- 
 Edit the input.txt file to include the URLs of the devices and their respective review pages. Example format:
 #Samsung_Galaxy_S20
 https://www.ebay.com/urw/Samsung-Galaxy-S20-Ultra-5G-128-GB-Black-Unlocked-/product-reviews/10041848098?pgn=1
@@ -82,30 +82,30 @@ https://www.ebay.com/urw/Samsung-Galaxy-S22-Ultra-512-GB-Black-Unlocked-/product
 #Samsung_Galaxy_S23
 https://www.ebay.com/urw/Samsung-Galaxy-S23-Ultra-256-GB-Black-Unlocked-/product-reviews/23059054247?pgn=1
 
-**2. Serve Ollama**
+**2. Serve Ollama**-
 Make sure you have ollama running in separate teminal by using the command :
 ```bash
-    ollama serve
+ollama serve
 ```
-**3. Run the Pipeline**
+**3. Run the Pipeline**-
 Run the following command to execute the pipeline:
 ```bash
 python3 main.py
 ```
-**Output**
+**Output**-
 Sentiment Files: Sentiment classifications for each device are saved in output/ as <device_name>_sentiments.txt.
 Combined Plot: A bar chart summarizing the sentiment analysis for all devices is saved as output/sentiment_analysis_combined_plot.png.
 
 ### Example
 
-**Input**
+**Input**-
 Sample reviews for Samsung_Galaxy_S20:
 
 "Amazing phone with excellent performance!"
 "Battery life is disappointing."
 "Average phone for the price."
 
-**Output**
+**Output**-
 Sentiment counts:
 Positive: 1
 Negative: 1
@@ -132,3 +132,42 @@ Each device's bar group allows a direct comparison of positive, negative, and ne
 **For example:**
 Samsung_Galaxy_S21 shows a high number of positive reviews compared to other devices.
 Samsung_Galaxy_S22 has relatively balanced neutral and positive sentiments.
+
+
+### Tests
+This project includes automated test cases written using pytest to ensure the correctness of each module in the pipeline.
+
+## Running the Tests
+**1 . Install pytest:** Install pytest if not already installed:
+```bash
+pip install pytest
+```
+**2. Run the Tests:**Execute all tests by running:
+```bash
+pytest
+```
+**3. View Results:**The output will indicate whether each test passed or failed, along with any relevant error messages.
+
+## Description of Tests
+## test_analyzer.py-
+
+Module: SentimentAnalyzer
+Purpose: Validates sentiment classification for predefined comments.
+Checks:Correct number of sentiments returned, Sentiments are classified as positive, neutral, or negative.
+
+## test_pipeline.py
+Module: SentimentPipeline
+Purpose: Tests integration of scraping and sentiment analysis.
+Checks: Correct sentiment classification for mock reviews, Sentiment output files are correctly generated.
+
+## test_plot.py
+Module: plot_sentiments_combined
+Purpose: Ensures the sentiment bar chart is generated correctly.
+Checks: Bar chart file is saved in the output/ directory.
+
+## test_scraper.py
+Module: ReviewScraper
+Purpose: Validates the review scraping functionality.
+Checks: Fetched reviews match expected mock data.
+
+**If any test fails, pytest will display a detailed error log to help debug the issue.**
